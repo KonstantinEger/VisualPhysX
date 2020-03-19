@@ -37,6 +37,14 @@ export class Simulation {
     this.update();
   }
 
+  public start(): void { this.loop = true; }
+  public stop(): void { this.loop = false; }
+
+  public size(width: number, height: number): void {
+    this.canvas.width = width;
+    this.canvas.height = height;
+  }
+
   private update(): void {
     if (this.loop === true) {
       // update simulation
