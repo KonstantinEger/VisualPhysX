@@ -2,10 +2,10 @@
   "name": "visualphysx",
   "version": "0.1.0",
   "description": "Simple library for creating physics animations",
-  "main": "dist/VisPhX.js",
+  "main": "dist/index.js",
   "scripts": {
     "watch": "parcel src/index.ts --global VisPhX --target browser --out-file dist/VisPhX.js --no-source-maps",
-    "build": "parcel build src/index.ts --global VisPhX --target browser --out-file dist/VisPhX.js --no-source-maps"
+    "build": "parcel build src/index.ts --global VisPhX --target browser --out-file dist/VisPhX.js --no-source-maps && tsc"
   },
   "repository": {
     "type": "git",
