@@ -1,0 +1,24 @@
+{
+  "name": "visualphysx",
+  "version": "0.1.0",
+  "description": "Simple library for creating physics animations",
+  "main": "dist/VisPhX.js",
+  "scripts": {
+    "watch": "parcel src/index.ts --global VisPhX --target browser --out-file dist/VisPhX.js --no-source-maps",
+    "build": "parcel build src/index.ts --global VisPhX --target browser --out-file dist/VisPhX.js --no-source-maps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KonstantinEger/VisualPhysX.git"
+  },
+  "author": "KonstantinEger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KonstantinEger/VisualPhysX/issues"
+  },
+  "homepage": "https://github.com/KonstantinEger/VisualPhysX#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.8.3"
+  }
+}
