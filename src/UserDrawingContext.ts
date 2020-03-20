@@ -84,7 +84,7 @@ export class UserDrawingContext {
     }
     for (let y = this.view.yRange[0]; y <= this.view.yRange[1]; y++) {
       this.ctx.strokeStyle = y === 0 ? 'red' : 'grey';
-      const realY = map(y, this.view.yRange[0], this.view.yRange[1], 0, this.ctx.canvas.height);
+      const realY = map(y, this.view.yRange[1], this.view.yRange[0], 0, this.ctx.canvas.height);
       this.ctx.beginPath();
       this.ctx.moveTo(0, realY);
       this.ctx.lineTo(this.ctx.canvas.width, realY);
