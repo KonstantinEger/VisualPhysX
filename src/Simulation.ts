@@ -21,6 +21,9 @@ export class Simulation {
   private updateCallback: UserRenderCallback;
   private loop: boolean = false;
   private prevTime: number;
+  private t0: number;
+  private currentT: number;
+  private began: boolean = false;
   private objects: PhysXObject[] = [];
 
   constructor(options: SimulationOptions) {
@@ -37,16 +40,33 @@ export class Simulation {
     this.parentEL.appendChild(this.canvas);
 
     this.prevTime = Date.now();
+    this.t0 = this.prevTime;
+    this.currentT = this.prevTime;
     this.setupCallback(this.ctx, this);
     this.update();
   }
 
-  public start(): void { this.loop = true; this.prevTime = Date.now(); }
+  public start(): void {
+    this.loop = true;
+    this.prevTime = Date.now();
+    if (this.began === false) {
+      this.t0 = this.prevTime;
+      this.began = true;
+    }
+  }
   public stop(): void { this.loop = false; }
 
   public size(width: number, height: number): void {
     this.canvas.width = width;
     this.canvas.height = height;
+  }
+
+  public getT0(): number {
+    return this.t0;
+  }
+
+  public getCurrentT(): number {
+    return this.currentT;
   }
 
   public addObject(obj: PhysXObject): void {
@@ -55,6 +75,7 @@ export class Simulation {
 
   public updateSim(): void {
     const newTime = Date.now();
+    this.currentT = newTime;
     const deltaT = (newTime - this.prevTime) / 1000;
     this.objects.forEach(obj => {
       obj.update(deltaT);
