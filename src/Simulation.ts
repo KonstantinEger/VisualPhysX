@@ -79,7 +79,7 @@ export class Simulation {
     this.forceFields.push(fF);
   }
 
-  public updateSim(): void {
+  private updateSim(): void {
     const newTime = Date.now();
     this.currentT = newTime;
     const deltaT = (newTime - this.prevTime) / 1000;
