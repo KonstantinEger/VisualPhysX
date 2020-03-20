@@ -1,5 +1,5 @@
-import { Vec2D } from "./utils/Vec2D";
-import { UserDrawingContext } from "./UserDrawingContext";
+import { Vec2D } from "../utils/Vec2D";
+import { UserDrawingContext } from "../UserDrawingContext";
 
 type PhysXObjectParams = {
   pos: Vec2D;
@@ -45,5 +45,13 @@ export class PhysXObject {
     });
     this.vel = this.vel.add(this.acc.scale(deltaT));
     this.pos = this.pos.add(this.vel.scale(deltaT));
+  }
+
+  public get x(): number {
+    return this.pos.x;
+  }
+
+  public get y(): number {
+    return this.pos.y;
   }
 }

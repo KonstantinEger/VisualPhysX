@@ -1,5 +1,6 @@
 import { UserDrawingContext } from "./UserDrawingContext";
-import { PhysXObject } from "./PhysXObject";
+import { PhysXObject } from "./objects/PhysXObject";
+import { ForceField } from "./objects/ForceField";
 
 type UserRenderCallback = (ctx: UserDrawingContext, sim: Simulation) => void;
 
@@ -25,6 +26,7 @@ export class Simulation {
   private currentT: number;
   private began: boolean = false;
   private objects: PhysXObject[] = [];
+  private forceFields: ForceField[] = [];
 
   constructor(options: SimulationOptions) {
     this.canvas = document.createElement('canvas');
@@ -73,11 +75,18 @@ export class Simulation {
     this.objects.push(obj);
   }
 
+  public addForceField(fF: ForceField): void {
+    this.forceFields.push(fF);
+  }
+
   public updateSim(): void {
     const newTime = Date.now();
     this.currentT = newTime;
     const deltaT = (newTime - this.prevTime) / 1000;
     this.objects.forEach(obj => {
+      this.forceFields.forEach(fField => {
+        if (fField.contains([obj.x, obj.y])) obj.applyForce(fField.F());
+      })
       obj.update(deltaT);
     });
     this.prevTime = newTime;
@@ -89,6 +98,7 @@ export class Simulation {
 
   private update(): void {
     if (this.loop === true) {
+      this.updateSim();
       this.updateCallback(this.ctx, this);
     }
     window.requestAnimationFrame(this.update.bind(this));
