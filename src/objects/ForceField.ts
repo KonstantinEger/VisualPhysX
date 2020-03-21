@@ -1,12 +1,13 @@
 import { Vec2D } from "../utils/Vec2D";
 import { UserDrawingContext } from "../UserDrawingContext";
+import { PhysXObject } from "./PhysXObject";
 
 type ForceFieldParams = {
   x: number;
   y: number;
   width: number;
   height: number;
-  force: Vec2D;
+  force: (obj: PhysXObject) => Vec2D;
 }
 
 export class ForceField {
@@ -14,7 +15,7 @@ export class ForceField {
   private y: number;
   private w: number;
   private h: number
-  private force: Vec2D;
+  private force: (obj: PhysXObject) => Vec2D;
 
   constructor(params: ForceFieldParams) {
     this.x = params.x;
@@ -42,5 +43,5 @@ export class ForceField {
     ctx.rect(this.x, this.y, this.w, this.h);
   }
 
-  public F(): Vec2D { return this.force; }
+  public F(obj: PhysXObject): Vec2D { return this.force(obj); }
 }
