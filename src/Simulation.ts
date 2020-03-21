@@ -85,7 +85,7 @@ export class Simulation {
     const deltaT = (newTime - this.prevTime) / 1000;
     this.objects.forEach(obj => {
       this.forceFields.forEach(fField => {
-        if (fField.contains([obj.x, obj.y])) obj.applyForce(fField.F());
+        if (fField.contains([obj.x, obj.y])) obj.applyForce(fField.F(obj));
       })
       obj.update(deltaT);
     });
