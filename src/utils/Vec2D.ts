@@ -1,16 +1,16 @@
 export class Vec2D {
-  private values: [number, number];
+  private _values: [number, number];
 
   constructor(values: [number, number]) {
-    this.values = values;
+    this._values = values;
   }
 
   public get x(): number {
-    return this.values[0];
+    return this._values[0];
   }
 
   public get y(): number {
-    return this.values[1];
+    return this._values[1];
   }
 
   public scale(scalar: number): Vec2D {

@@ -15,92 +15,92 @@ type SimulationOptions = {
 };
 
 export class Simulation {
-  private parentEL: HTMLElement;
-  private canvas: HTMLCanvasElement;
-  private ctx: UserDrawingContext;
-  private setupCallback: UserRenderCallback;
-  private updateCallback: UserRenderCallback;
-  private loop: boolean = false;
-  private prevTime: number;
-  private t0: number;
-  private currentT: number;
-  private began: boolean = false;
-  private objects: PhysXObject[] = [];
-  private forceFields: ForceField[] = [];
+  private _parentEL: HTMLElement;
+  private _canvas: HTMLCanvasElement;
+  private _ctx: UserDrawingContext;
+  private _setupCallback: UserRenderCallback;
+  private _updateCallback: UserRenderCallback;
+  private _loop: boolean = false;
+  private _prevTime: number;
+  private _t0: number;
+  private _currentT: number;
+  private _began: boolean = false;
+  private _objects: PhysXObject[] = [];
+  private _forceFields: ForceField[] = [];
 
   constructor(options: SimulationOptions) {
-    this.canvas = document.createElement('canvas');
+    this._canvas = document.createElement('canvas');
     {
-      const ctx = this.canvas.getContext('2d');
+      const ctx = this._canvas.getContext('2d');
       if (ctx === null) throw new Error('Can not get drawing context.');
-      this.ctx = new UserDrawingContext(ctx, options.view);
+      this._ctx = new UserDrawingContext(ctx, options.view);
     }
-    this.setupCallback = options.setup;
-    this.updateCallback = options.update;
+    this._setupCallback = options.setup;
+    this._updateCallback = options.update;
 
-    this.parentEL = options.parentElement;
-    this.parentEL.appendChild(this.canvas);
+    this._parentEL = options.parentElement;
+    this._parentEL.appendChild(this._canvas);
 
-    this.prevTime = Date.now();
-    this.t0 = this.prevTime;
-    this.currentT = this.prevTime;
-    this.setupCallback(this.ctx, this);
-    this.update();
+    this._prevTime = Date.now();
+    this._t0 = this._prevTime;
+    this._currentT = this._prevTime;
+    this._setupCallback(this._ctx, this);
+    this._update();
   }
 
   public start(): void {
-    this.loop = true;
-    this.prevTime = Date.now();
-    if (this.began === false) {
-      this.t0 = this.prevTime;
-      this.began = true;
+    this._loop = true;
+    this._prevTime = Date.now();
+    if (this._began === false) {
+      this._t0 = this._prevTime;
+      this._began = true;
     }
   }
-  public stop(): void { this.loop = false; }
+  public stop(): void { this._loop = false; }
 
   public size(width: number, height: number): void {
-    this.canvas.width = width;
-    this.canvas.height = height;
+    this._canvas.width = width;
+    this._canvas.height = height;
   }
 
   public getT0(): number {
-    return this.t0;
+    return this._t0;
   }
 
   public getCurrentT(): number {
-    return this.currentT;
+    return this._currentT;
   }
 
   public addObject(obj: PhysXObject): void {
-    this.objects.push(obj);
+    this._objects.push(obj);
   }
 
   public addForceField(fF: ForceField): void {
-    this.forceFields.push(fF);
+    this._forceFields.push(fF);
   }
 
-  private updateSim(): void {
+  private _updateSim(): void {
     const newTime = Date.now();
-    this.currentT = newTime;
-    const deltaT = (newTime - this.prevTime) / 1000;
-    this.objects.forEach(obj => {
-      this.forceFields.forEach(fField => {
+    this._currentT = newTime;
+    const deltaT = (newTime - this._prevTime) / 1000;
+    this._objects.forEach(obj => {
+      this._forceFields.forEach(fField => {
         if (fField.contains([obj.x, obj.y])) obj.applyForce(fField.F(obj));
       })
       obj.update(deltaT);
     });
-    this.prevTime = newTime;
+    this._prevTime = newTime;
   }
 
   public eachObject(cb: (obj: PhysXObject) => void): void {
-    this.objects.forEach(obj => { cb(obj) });
+    this._objects.forEach(obj => { cb(obj) });
   }
 
-  private update(): void {
-    if (this.loop === true) {
-      this.updateSim();
-      this.updateCallback(this.ctx, this);
+  private _update(): void {
+    if (this._loop === true) {
+      this._updateSim();
+      this._updateCallback(this._ctx, this);
     }
-    window.requestAnimationFrame(this.update.bind(this));
+    window.requestAnimationFrame(this._update.bind(this));
   }
 }

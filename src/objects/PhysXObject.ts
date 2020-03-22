@@ -11,47 +11,47 @@ type PhysXObjectParams = {
 }
 
 export class PhysXObject {
-  private pos: Vec2D;
-  private vel: Vec2D;
-  private acc: Vec2D;
-  private mass: number;
-  private forces: Vec2D[] = [];
-  private isStatic: boolean;
+  private _pos: Vec2D;
+  private _vel: Vec2D;
+  private _acc: Vec2D;
+  private _mass: number;
+  private _forces: Vec2D[] = [];
+  private _isStatic: boolean;
   public draw: (ctx: UserDrawingContext) => void;
   public objectData: any;
 
   constructor(params: PhysXObjectParams) {
-    this.pos = params.pos;
-    this.vel = params.v0 !== undefined ? params.v0 : new Vec2D([0, 0]);
-    this.acc = new Vec2D([0, 0]);
-    this.mass = params.mass;
+    this._pos = params.pos;
+    this._vel = params.v0 !== undefined ? params.v0 : new Vec2D([0, 0]);
+    this._acc = new Vec2D([0, 0]);
+    this._mass = params.mass;
     this.draw = params.draw;
-    this.isStatic = params.isStatic !== undefined ? params.isStatic : false;
+    this._isStatic = params.isStatic !== undefined ? params.isStatic : false;
     this.objectData = params.objectData;
   }
 
   public applyForce(F: Vec2D): void {
-    this.forces.push(F);
+    this._forces.push(F);
   }
 
   public update(deltaT: number): void {
-    if (this.isStatic === true) return;
+    if (this._isStatic === true) return;
 
-    this.acc = this.acc.scale(0);
-    this.forces = this.forces.filter(F => {
-      const a = new Vec2D([F.x / this.mass, F.y / this.mass]);
-      this.acc = this.acc.add(a);
+    this._acc = this._acc.scale(0);
+    this._forces = this._forces.filter(F => {
+      const a = new Vec2D([F.x / this._mass, F.y / this._mass]);
+      this._acc = this._acc.add(a);
       return false;
     });
-    this.vel = this.vel.add(this.acc.scale(deltaT));
-    this.pos = this.pos.add(this.vel.scale(deltaT));
+    this._vel = this._vel.add(this._acc.scale(deltaT));
+    this._pos = this._pos.add(this._vel.scale(deltaT));
   }
 
   public get x(): number {
-    return this.pos.x;
+    return this._pos.x;
   }
 
   public get y(): number {
-    return this.pos.y;
+    return this._pos.y;
   }
 }
