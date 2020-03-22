@@ -43,5 +43,5 @@ export class ForceField {
     ctx.rect(this._x, this._y, this._w, this._h);
   }
 
-  public F(obj: PhysXObject): Vec2D { return this._force(obj); }
+  public getForceOnObject(obj: PhysXObject): Vec2D { return this._force(obj); }
 }

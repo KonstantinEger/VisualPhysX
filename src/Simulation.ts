@@ -79,26 +79,26 @@ export class Simulation {
     this._forceFields.push(fF);
   }
 
-  private _updateSim(): void {
-    const newTime = Date.now();
-    this._currentT = newTime;
-    const deltaT = (newTime - this._prevTime) / 1000;
-    this._objects.forEach(obj => {
-      this._forceFields.forEach(fField => {
-        if (fField.contains([obj.x, obj.y])) obj.applyForce(fField.F(obj));
-      })
-      obj.update(deltaT);
-    });
-    this._prevTime = newTime;
-  }
-
   public eachObject(cb: (obj: PhysXObject) => void): void {
     this._objects.forEach(obj => { cb(obj) });
   }
 
   private _update(): void {
     if (this._loop === true) {
-      this._updateSim();
+      const newTime = Date.now();
+      this._currentT = newTime;
+      const deltaT = (newTime - this._prevTime) / 1000;
+      this._objects.forEach(obj => {
+        this._forceFields.forEach(fField => {
+          if (fField.contains([obj.x, obj.y])) {
+            const force = fField.getForceOnObject(obj);
+            obj.applyForce(force);
+          }
+        });
+        obj.update(deltaT);
+      });
+      this._prevTime = newTime;
+
       this._updateCallback(this._ctx, this);
     }
     window.requestAnimationFrame(this._update.bind(this));
