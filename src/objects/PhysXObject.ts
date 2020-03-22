@@ -54,4 +54,8 @@ export class PhysXObject {
   public get y(): number {
     return this._pos.y;
   }
+
+  public get mass(): number {
+    return this._mass;
+  }
 }

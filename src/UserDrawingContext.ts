@@ -93,4 +93,8 @@ export class UserDrawingContext {
     }
     this._ctx.strokeStyle = sSBefore;
   }
+
+  public get context(): CanvasRenderingContext2D {
+    return this._ctx;
+  }
 }
