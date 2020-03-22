@@ -11,18 +11,18 @@ type ForceFieldParams = {
 }
 
 export class ForceField {
-  private x: number;
-  private y: number;
-  private w: number;
-  private h: number
-  private force: (obj: PhysXObject) => Vec2D;
+  private _x: number;
+  private _y: number;
+  private _w: number;
+  private _h: number
+  private _force: (obj: PhysXObject) => Vec2D;
 
   constructor(params: ForceFieldParams) {
-    this.x = params.x;
-    this.y = params.y;
-    this.w = params.width;
-    this.h = params.height;
-    this.force = params.force;
+    this._x = params.x;
+    this._y = params.y;
+    this._w = params.width;
+    this._h = params.height;
+    this._force = params.force;
   }
 
   public contains(point: [number, number]): boolean {
@@ -30,8 +30,8 @@ export class ForceField {
     const y = point[1];
 
     if (
-      x >= this.x && x <= this.x + this.w &&
-      y >= this.y && y <= this.y + this.h
+      x >= this._x && x <= this._x + this._w &&
+      y >= this._y && y <= this._y + this._h
     ) {
       return true
     } else return false;
@@ -40,8 +40,8 @@ export class ForceField {
   public draw(ctx: UserDrawingContext, color?: string | CanvasGradient | CanvasPattern): void {
     ctx.noFill();
     ctx.stroke(color === undefined ? 'red' : color);
-    ctx.rect(this.x, this.y, this.w, this.h);
+    ctx.rect(this._x, this._y, this._w, this._h);
   }
 
-  public F(obj: PhysXObject): Vec2D { return this.force(obj); }
+  public F(obj: PhysXObject): Vec2D { return this._force(obj); }
 }
