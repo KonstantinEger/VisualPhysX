@@ -2,8 +2,8 @@
 _Simple library for physics animations_
 
 ## How to use it
-Drawing Shapes and a coordinate system
-````html
+simulate a ball falling
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +17,24 @@ Drawing Shapes and a coordinate system
   </div>
 
   <script>
+    // create the ball
+    const ball = new VisPhX.Object({
+      pos: new VisPhX.Vec2D([0, 0]) // position (0|0)
+      mass: 0.5, // kg
+      draw(context) {
+        context.fill('black');
+        context.circle(ball.x, ball.y, 0.3); // (x, y, r)
+      },
+      //...
+    });
+    // create the force
+    const gravity = new VisPhX.ForceField({
+      x: -5, y: -5, width: 10, height: 10, // only acts in this area
+      force: (object) => {
+        // Fg=m*g
+        return new VisPhX.Vec2D([0, object.mass * (-9.81)]);
+      }
+    });
     // parameters for the simulation
     const params = {
       // append canvas to div#parent
@@ -31,6 +49,10 @@ Drawing Shapes and a coordinate system
       setup: (context, simulation) => {
         // make canvas 500x500 pixels
         simulation.size(500, 500);
+        // add gravity
+        simulation.addForceField(gravity);
+        // add the ball to our simulation
+        simulation.addObject(ball);
       },
       // animation loop; called every frame
       update: (ctx, sim) => {
@@ -41,14 +63,23 @@ Drawing Shapes and a coordinate system
         ctx.rect(0, 0, 500, 500, VisPhX.PIXELS);
         // draw coordinate system
         ctx.coord();
-        // draw a black rect (x, y, width, height)
-        ctx.fill('black');
-        ctx.rect(1, 1, 3, 1.5)
+        // gravity could also be applied manually
+        // const gravity = new VisPhX.Vec2D([0, ball.mass * (-9.81)]);
+        // ball.applyForce(gravity);
+        // => acts globally; not just in an area like a ForceField
+        // would be the better option here
+
+        // draw the ball (function where we created "const ball =...")
+        ball.draw(ctx);
       }
-    }
+    };
     // create the simulation
-    const sim = new VisPhX.Simulation();
+    const sim = new VisPhX.Simulation(params);
+
+    // start the simulation
+    sim.start();
+    // to stop => sim.stop();
   </script>
 </body>
 </html>
-````
+```
