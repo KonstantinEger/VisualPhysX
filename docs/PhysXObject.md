@@ -77,4 +77,4 @@ PhysXObject(params) => PhysXObject
 
 ### `._isStatic` _private_
 > If the object should change its position when updated.
-`_isStatic: number`
+`_isStatic: boolean`
