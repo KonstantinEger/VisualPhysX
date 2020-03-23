@@ -43,8 +43,16 @@ export class PhysXObject {
       this._acc = this._acc.add(a);
       return false;
     });
-    this._vel = this._vel.add(this._acc.scale(deltaT));
-    this._pos = this._pos.add(this._vel.scale(deltaT));
+    // v=a*t+v0
+    const vel = this._acc.scale(deltaT).add(this._vel);
+    // s=(a/2)*t^2+v0*t+s0
+    const pos = this._acc
+      .scale(1 / 2)
+      .scale(Math.pow(deltaT, 2))
+      .add(this._vel.scale(deltaT))
+      .add(this._pos);
+    this._vel = vel;
+    this._pos = pos;
   }
 
   public get x(): number {
